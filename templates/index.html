@@ -1,0 +1,249 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content-wrapper container">
+    <div class="page-heading">
+        <h3>Dashboard</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon purple mb-2">
+                                            <img src="/static/icon/snack.svg" alt="" srcset="" style="width: 50%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Bungkus Plastik</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalBungkusPlastik">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon blue mb-2">
+                                            <img src="/static/icon/kotak karton.svg" alt="" srcset="" style="width: 50%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Kotak Karton</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalKotakKarton">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon green mb-2">
+                                            <img src="/static/icon/botol plastik.svg" alt="" srcset="" style="width: 30%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Botol Plastik</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalBotolPlastik">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon red mb-2">
+                                            <img src="/static/icon/kaleng.svg" alt="" srcset="" style="width: 50%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Kaleng</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalKaleng">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon orange mb-2">
+                                            <img src="/static/icon/styrofoam.svg" alt="" srcset="" style="width: 90%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Styrofoam</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalStyrofoam">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                        <div class="stats-icon teal mb-2">
+                                            <img src="/static/icon/sum.svg" alt="" srcset="" style="width: 50%;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">Total</h6>
+                                        <h6 class="font-extrabold mb-0" id="totalSampah">0000</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4 id="h4JudulGrafik">Grafik Sampah Tahun</h4>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="dropdown float-end">
+                                            <button class="btn btn-outline-secondary dropdown-toggle me-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Sortir
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <button class="dropdown-item" onclick="changeGrafik('tahun')">Tahun</button>
+                                                <button class="dropdown-item" onclick="changeGrafik('bulan')">Bulan</button>
+                                                <button class="dropdown-item" onclick="changeGrafik('hari')">Hari</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart-grafik-sampah"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </div>
+
+</div>
+<script>
+    var socket = io('/indexSocket');
+    
+    statusGrafik = '';
+    
+    socket.on('indexSocketResponse', function (msg, cb) {
+        // console.log(window.statusGrafik);
+        changeGrafik(statusGrafik);
+        // var logElement = document.getElementById('log');
+        // var newElement = document.createElement('div');
+        // newElement.textContent = 'logs #' + msg.count + ': ' + msg.data;
+        // logElement.appendChild(document.createElement('br'));
+        // logElement.appendChild(newElement);
+
+        if (cb)
+            cb();
+    });
+
+
+    var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    var hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
+
+    changeGrafik = (status) => {
+        statusGrafik = status;
+        if (status == 'tahun') {
+            document.getElementById("h4JudulGrafik").textContent = `Grafik Sampah Tahun ${new Date().getFullYear()}`;
+        } else if (status == 'bulan') {
+            document.getElementById("h4JudulGrafik").textContent = `Grafik Sampah Bulan ${bulan[new Date().getMonth()]}`;
+        } else if (status == 'hari') {
+            document.getElementById("h4JudulGrafik").textContent = `Grafik Sampah Hari ${hari[new Date().getDay()]}`;
+        }
+
+        fetch("/fetchIndex/" + status)
+            .then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                document.getElementById("totalBungkusPlastik").textContent = result.totalPerSampah[0];
+                document.getElementById("totalKotakKarton").textContent = result.totalPerSampah[1];
+                document.getElementById("totalBotolPlastik").textContent = result.totalPerSampah[2];
+                document.getElementById("totalKaleng").textContent = result.totalPerSampah[3];
+                document.getElementById("totalStyrofoam").textContent = result.totalPerSampah[4];
+                document.getElementById("totalSampah").textContent = result.totalPerSampah[5];
+
+                var optionsProfileVisit = {
+                    annotations: {
+                        position: "back",
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    chart: {
+                        type: "bar",
+                        height: 300,
+                    },
+                    fill: {
+                        opacity: 1,
+                    },
+                    plotOptions: {},
+                    series: [
+                        {
+                            name: "Total",
+                            data: result.grafikSampah,
+                        },
+                    ],
+                    colors: "#435ebe",
+                    yaxis: {
+                        labels: {
+                            formatter: function (val) {
+                                return Math.floor(val)
+                            }
+                        }
+                    },
+                    xaxis: {
+                        categories: [
+                            "Bungkus Plastik",
+                            "Kotak Karton",
+                            "Botol Plastik",
+                            "Kaleng",
+                            "Styrofoam",
+                        ],
+                    },
+                }
+
+                var chartProfileVisit = new ApexCharts(
+                    document.querySelector("#chart-grafik-sampah"),
+                    optionsProfileVisit
+                )
+
+                chartProfileVisit.render()
+
+                chartProfileVisit.updateSeries([
+                    {
+                        name: "Total",
+                        data: result.grafikSampah,
+                    },
+                ])
+
+            });
+
+    }
+    changeGrafik('tahun');
+
+</script>
+{% endblock %}

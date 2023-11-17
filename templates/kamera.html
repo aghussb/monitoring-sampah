@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content-wrapper container">
+    <div class="page-heading">
+        <h3>Monitoring Kamera</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <img src="{{ url_for('videoStream') }}" width="100%">
+                            </div>
+                            <div class="col-6">
+                                <h4 class="card-title">Hasil Prediksi :</h4>
+                                <h5 id="elH5Predict"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<script>
+
+    var socket = io('/kameraSocket');
+    socket.on('kameraSocketResponse', function (msg, cb) {
+        // console.log(msg);
+        document.getElementById('elH5Predict').textContent = msg.class;
+        // var elH5Predict = document.getElementById('elH5Predict');
+        // var newElement = document.createElement('div');
+        // newElement.textContent = 'logs #' + msg.count + ': ' + msg.data;
+        // logElement.appendChild(document.createElement('br'));
+        // logElement.appendChild(newElement);
+
+        if (cb)
+            cb();
+    });
+</script>
+{% endblock %}

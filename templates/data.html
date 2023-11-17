@@ -1,0 +1,269 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content-wrapper container">
+    <div class="page-heading">
+        <h3>Data Sampah</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="first-name-vertical">Cari Berdasarkan</label>
+                                    <select class="form-select" id="selectFilter" onchange="changeFilter()">
+                                        <option value="0" selected>Semua</option>
+                                        <option value="1">Jenis Sampah</option>
+                                        <option value="2">Tanggal</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6" style="display: none;" id="jenisSampahEl">
+                                <table style="width: 100%;border: none;margin-top: 15px;">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" id="bungkusPlastikCheckbox" class="form-check-input" value="Bungkus Plastik" onclick="clickJenisSampah(this)" />
+                                            <label for="bungkusPlastikCheckbox">Bungkus Plastik</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="kotakKartonCheckbox" class="form-check-input" value="Kotak Karton" onclick="clickJenisSampah(this)" />
+                                            <label for="kotakKartonCheckbox">Kotak Karton</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="botolPlastikCheckbox" class="form-check-input" value="Botol Plastik" onclick="clickJenisSampah(this)" />
+                                            <label for="botolPlastikCheckbox">Botol Plastik</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" id="kalengCheckbox" class="form-check-input" value="Kaleng" onclick="clickJenisSampah(this)" />
+                                            <label for="kalengCheckbox">Kaleng</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="styrofoamCheckbox" class="form-check-input" value="Styrofoam" onclick="clickJenisSampah(this)" />
+                                            <label for="styrofoamCheckbox">Styrofoam</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-3" style="display: none;" id="tanggalEl1">
+                                <div class="form-group">
+                                    <label for="first-name-vertical" style="visibility: hidden;">none</label>
+                                    <div class="form-group">
+                                        <input class="form-control" type="date" id="inputTanggalStart" onchange="changeTanggal()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1" style="display: none;" id="tanggalEl2">
+                                <h6 style="margin-top: 32px;text-align: center;">
+                                    s/d
+                                </h6>
+                            </div>
+                            <div class="col-3" style="display: none;" id="tanggalEl3">
+                                <div class="form-group">
+                                    <label for="first-name-vertical" style="visibility: hidden;">none</label>
+                                    <div class="form-group">
+                                        <input class="form-control" type="date" id="inputTanggalEnd" onchange="changeTanggal()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-9" id="printEl">
+                                <button class="btn btn-outline-secondary float-end" style="margin-top: 1.7rem !important;" onclick="print()">
+                                    <i class="fa fa-print"></i> Print
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-lg">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No.</th>
+                                                <th class="text-center">Sampah</th>
+                                                <th class="text-center">Tanggal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="elBodyTable">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <h6 style="position: absolute;" id="elTotalData"></h6>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination pagination-primary justify-content-center" id="elPagination">
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<script>
+    var socket = io('/dataSocket');
+
+    var statusFilter = 0;
+
+    socket.on('dataSocketResponse', function (msg, cb) {
+        // console.log(window.statusGrafik);
+        load(statusFilter, 0);
+        // var logElement = document.getElementById('log');
+        // var newElement = document.createElement('div');
+        // newElement.textContent = 'logs #' + msg.count + ': ' + msg.data;
+        // logElement.appendChild(document.createElement('br'));
+        // logElement.appendChild(newElement);
+
+        if (cb)
+            cb();
+    });
+
+    var currentPage = 1;
+    var limitPage = 10;
+
+    var filterJenisSampah = [];
+    var filterDateBetween = "";
+
+    load = (status, statusPrint) => {
+        let postParameter = new FormData()
+        postParameter.append("currentPage", currentPage)
+        postParameter.append("limitPage", limitPage)
+        postParameter.append("statusFilter", statusFilter)
+        postParameter.append("filterJenisSampah", `(${filterJenisSampah.map(item => `'${item}'`).join(',')})`)
+        postParameter.append("filterDateBetween", filterDateBetween)
+        postParameter.append("statusPrint", statusPrint)
+        // console.log(filterJenisSampah);
+
+        var elBodyTable = document.getElementById("elBodyTable");
+        var elPagination = document.getElementById("elPagination");
+
+        fetch("/fetchData", {
+            "method": "POST",
+            "body": postParameter,
+        })
+            .then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                // console.log(result);
+                if (statusPrint) {
+                    var doc = new jsPDF();
+                    var col = ["No.", "Sampah", "Tanggal"];
+                    var rows = [];
+
+                    result.data.forEach((value,index) => {
+                        value.unshift(index+1);
+                    });
+
+                    console.log(result.data);
+                    doc.autoTable(col, result.data, { startY: 10 });
+                    doc.save(`Data Sampah - ${new Date().getTime()}.pdf`);
+                }
+                else {
+                    var htmlBodyTable = "", htmlPagination = "";
+    
+                    for (let index = 0; index < result.data.length; index++) {
+                        htmlBodyTable += `<tr>
+                                            <td class="text-center">${currentPage > 1 ? (limitPage * (currentPage - 1)) + index + 1 : index + 1}</td>
+                                            <td>${result.data[index][0]}</td>
+                                            <td class="text-center">${result.data[index][1]}</td>
+                                        </tr>`;
+                    }
+                    elBodyTable.innerHTML = htmlBodyTable;
+    
+                    if (result.total > 10) {
+                        for (let index = 0; index < result.pagination.length; index++) {
+                            htmlPagination += `<li class="page-item ${(result.pagination[index].disabled != undefined && result.pagination[index].disabled === true) ? "disabled" : ""} ${(result.pagination[index].active != undefined && result.pagination[index].active === true) ? "active" : ""}">
+                                            <button class="page-link" onclick="changePage(${result.pagination[index].to})">${result.pagination[index].value}</button>
+                                        </li>`;
+                        }
+                        elPagination.innerHTML = htmlPagination;
+                    }
+    
+                    document.getElementById("elTotalData").innerHTML = `Total : ${result.total.toLocaleString()}`;
+                }
+                // console.log(result);
+            });
+    }
+    load(statusFilter, 0);
+
+    changePage = (page) => {
+        currentPage = page;
+        load(statusFilter, 0);
+    }
+
+    changeFilter = () => {
+        var valFilter = parseInt(document.getElementById("selectFilter").value);
+        var elJenisSampah = document.getElementById("jenisSampahEl");
+        var elTanggal1 = document.getElementById("tanggalEl1");
+        var elTanggal2 = document.getElementById("tanggalEl2");
+        var elTanggal3 = document.getElementById("tanggalEl3");
+
+        statusFilter = valFilter;
+
+        if (valFilter == 0) {
+            elJenisSampah.style.display = 'none';
+            elTanggal1.style.display = 'none';
+            elTanggal2.style.display = 'none';
+            elTanggal3.style.display = 'none';
+            document.getElementById("printEl").className = 'col-9';
+            load(statusFilter, 0);
+        }
+        else if (valFilter == 1) {
+            elJenisSampah.style.display = 'block';
+            elTanggal1.style.display = 'none';
+            elTanggal2.style.display = 'none';
+            elTanggal3.style.display = 'none';
+            document.getElementById("printEl").className = 'col-3';
+        }
+        else if (valFilter == 2) {
+            elJenisSampah.style.display = 'none';
+            elTanggal1.style.display = 'block';
+            elTanggal2.style.display = 'block';
+            elTanggal3.style.display = 'block';
+            document.getElementById("printEl").className = 'col-2';
+        }
+    }
+
+    clickJenisSampah = (el) => {
+        el.checked ? filterJenisSampah.push(el.value) : filterJenisSampah = filterJenisSampah.filter(item => item !== el.value);
+        load(statusFilter, 0);
+    }
+
+    changeTanggal = () => {
+        inputTanggalStart = document.getElementById("inputTanggalStart");
+        inputTanggalEnd = document.getElementById("inputTanggalEnd");
+
+        if (inputTanggalStart.value != "" && inputTanggalEnd.value != "") {
+            if (new Date(inputTanggalStart.value).getTime() > new Date(inputTanggalEnd.value).getTime()) {
+                alert("Tanggal Awal tidak boleh lebih dari Tanggal Akhir!!!");
+                inputTanggalStart.value = "";
+                inputTanggalEnd.value = "";
+                return;
+            }
+
+            filterDateBetween = `'${inputTanggalStart.value}' AND '${inputTanggalEnd.value}'`;
+
+            load(statusFilter, 0);
+        }
+
+    }
+
+    print = () => {
+        load(statusFilter, 1);
+    }
+
+</script>
+{% endblock %}
